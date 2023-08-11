@@ -1,7 +1,9 @@
 package com.Dimsoft.GestionEtudiantMatiere.services;
 
 import java.util.List;
+import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.Dimsoft.GestionEtudiantMatiere.modeles.Subject;
@@ -13,6 +15,8 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class SubjectServiceImpl implements SubjectService {
 
+    // @Autowired
+    //  SubjectRepository subjectRepository;
     private final SubjectRepository subjectRepository;
 
     @Override
@@ -33,12 +37,21 @@ public class SubjectServiceImpl implements SubjectService {
     public Subject updateSubject(Long idSubject, Subject subject) {
         // TODO Auto-generated method stub
         // throw new UnsupportedOperationException("Unimplemented method 'updaSubject'");
-        return subjectRepository.findById(idSubject)
-            .map(s -> {
-                s.setSubjectName(subject.getSubjectName());
-                s.setCoef(subject.getCoef());
-                return subjectRepository.save(s);
-            }).orElseThrow(() -> new RuntimeException("la matiere n'existe pas"));
+
+        Optional<Subject> founSubject = subjectRepository.findById(idSubject);
+
+        if (!founSubject.isPresent()) {
+            throw new RuntimeException("L'etudiant n'existe pas");
+        }else{
+            return subjectRepository.save(subject);
+        }
+
+        // return subjectRepository.findById(idSubject)
+        //     .map(s -> {
+        //         s.setSubjectName(subject.getSubjectName());
+        //         s.setCoef(subject.getCoef());
+        //         return subjectRepository.save(s);
+        //     }).orElseThrow(() -> new RuntimeException("la matiere n'existe pas"));
     }
 
     @Override

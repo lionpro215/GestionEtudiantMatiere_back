@@ -2,6 +2,7 @@ package com.Dimsoft.GestionEtudiantMatiere.controleurs;
 
 import java.util.List;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +22,8 @@ import lombok.AllArgsConstructor;
 @RestController
 @RequestMapping("/user")
 @AllArgsConstructor
+@CrossOrigin("*")
+
 public class UserControleur {
     
     private final UserService userService;
@@ -30,15 +33,22 @@ public class UserControleur {
         return userService.createUser(user);
     }
 
-    @GetMapping("/getAllUser")
+    @GetMapping("/getAllUsers")
     public List<User> getAllUsers(){
         return userService.getAllUsers();
     }
 
-    @PutMapping("/updateUser/{idUser}")
-    public User updateUser(@PathVariable Long idUser, @RequestBody User user){
-        return userService.updateUser(idUser, user);
+    @PutMapping("/updateUser")
+    public User updateUser(@RequestBody User user){
+        int g=0;
+        return userService.updateUser(user.getId_user(), user);
+
     }
+
+    // @PutMapping("/updateUser/{idUser}")
+    // public User updateUser(@PathVariable Long idUser, @RequestBody User user){
+    //     return userService.updateUser(idUser, user);
+    // }
 
     @DeleteMapping("/deleteUser/{idUser}")
     public String deleteUser(@PathVariable Long idUser){
